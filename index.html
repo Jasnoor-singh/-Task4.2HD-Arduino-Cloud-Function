@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traffic Lights Control</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #1e3c72, #2a5298); 
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .heading {
+      font-size: 30px;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      margin-bottom: 10px;
+    }
+
+    .author {
+      font-size: 18px;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
+
+    .trafficlight {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #333;
+      padding: 10px;
+      border-radius: 15px;
+      width: 100px;
+      position: relative;
+    }
+
+    .light {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #444;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+      border: 4px solid transparent; 
+    }
+
+    .red {
+      border-color: red; 
+    }
+
+    .yellow {
+      border-color: yellow; /* Outer border for yellow light */
+    }
+
+    .green {
+      border-color: green; 
+    }
+
+    .light.active.red {
+      background-color: red;
+      box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.4);
+    }
+
+    .light.active.yellow {
+      background-color: yellow;
+      box-shadow: 0 0 20px 10px rgba(255, 255, 0, 0.4);
+    }
+
+    .light.active.green {
+      background-color: limegreen;
+      box-shadow: 0 0 20px 10px rgba(0, 255, 0, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="heading">Light Control System</div>
+    <div class="author">By Jasnoor Singh</div>
+    <div class="trafficlight">
+      <div class="light red" id="red-light"></div>
+      <div class="light yellow" id="yellow-light"></div>
+      <div class="light green" id="green-light"></div>
+    </div>
+  </div>
+
+  <!-- Firebase and Control Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_4VXk6yDJkFkrmXrDiSjOtbubzKERUVQ",
+      authDomain: "remote-led-controller.firebaseapp.com",
+      databaseURL: "https://remote-led-controller-default-rtdb.firebaseio.com",
+      projectId: "remote-led-controller",
+      storageBucket: "remote-led-controller.appspot.com",
+      messagingSenderId: "262055135782",
+      appId: "1:262055135782:web:48ee7986b63624876734e7",
+      measurementId: "G-VRV5KBTCYH"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Functions to interact with Firebase
+    function LED_RED() {
+      firebase.database().ref("status/").set({
+        status: "RED"
+      });
+    }
+
+    function LED_YELLOW() {
+      firebase.database().ref("status/").set({
+        status: "YELLOW"
+      });
+    }
+
+    function LED_GREEN() {
+      firebase.database().ref("status/").set({
+        status: "GREEN"
+      });
+    }
+
+    function LED_OFF() {
+      firebase.database().ref("status/").set({
+        status: "OFF"
+      });
+    }
+  </script>
+
+  <script>
+    const redLight = document.getElementById('red-light');
+    const yellowLight = document.getElementById('yellow-light');
+    const greenLight = document.getElementById('green-light');
+
+    // Event listeners for lights
+    redLight.addEventListener('click', () => {
+      if (redLight.classList.contains('active')) {
+        redLight.classList.remove('active');
+        LED_OFF();
+      } else {
+        redLight.classList.add('active');
+        yellowLight.classList.remove('active');
+        greenLight.classList.remove('active');
+        LED_RED();
+      }
+    });
+
+    yellowLight.addEventListener('click', () => {
+      if (yellowLight.classList.contains('active')) {
+        yellowLight.classList.remove('active');
+        LED_OFF();
+      } else {
+        yellowLight.classList.add('active');
+        redLight.classList.remove('active');
+        greenLight.classList.remove('active');
+        LED_YELLOW();
+      }
+    });
+
+    greenLight.addEventListener('click', () => {
+      if (greenLight.classList.contains('active')) {
+        greenLight.classList.remove('active');
+        LED_OFF();
+      } else {
+        greenLight.classList.add('active');
+        redLight.classList.remove('active');
+        yellowLight.classList.remove('active');
+        LED_GREEN();
+      }
+    });
+  </script>
+</body>
+</html>
