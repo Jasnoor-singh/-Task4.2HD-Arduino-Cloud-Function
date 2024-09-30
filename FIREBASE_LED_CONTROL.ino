@@ -3,10 +3,9 @@
 #include <Firebase_Arduino_WiFiNINA.h>
 
 // Firebase configuration details
-#define FIREBASE_HOST "remote-led-controller-default-rtdb.firebaseio.com" // Your Firebase Realtime Database URL without https://
-#define FIREBASE_AUTH "AIzaSyB_4VXk6yDJkFkrmXrDiSjOtbubzKERUVQ"           // Your Firebase Web API Key
-
-#define WIFI_SSID "Hehe"
+#define FIREBASE_HOST "remote-led-controller-default-rtdb.firebaseio.com" 
+#define FIREBASE_AUTH "AIzaSyB_4VXk6yDJkFkrmXrDiSjOtbubzKERUVQ"       
+#define WIFI_SSID "Kanwar"
 #define WIFI_PASSWORD "123456789"
 
 FirebaseData firebaseData;
@@ -59,7 +58,7 @@ void loop()
     Serial.println("Unknown status: " + status);
   }
 
-  delay(1000); // Adjust the delay as needed
+  delay(1200); 
 }
 
 void connectToWiFi()
